@@ -50,11 +50,11 @@ function App() {
     <div>
       <label>
         First Name:
-        <input type="text" name="firstName" onChange={handleLastNameChange} />
+        <input type="text" name="firstName" onChange={handleFirstNameChange} />
       </label>
       <label>
         Last Name:
-        <input type="text" name="lastName" onChange={handleFirstNameChange} />
+        <input type="text" name="lastName" onChange={handleLastNameChange} />
       </label>
       <button onClick={set}>Save</button>
 

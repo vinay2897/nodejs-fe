@@ -1,24 +1,77 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [users, setUsers] = useState(null);
+
+  function handleFirstNameChange(e) {
+    setFirstName(e.target.value);
+  }
+
+  function handleLastNameChange(e) {
+    setLastName(e.target.value);
+  }
+
+  async function set() {
+    fetch('http://localhost:5000/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        firstName, lastName,
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  async function get() {
+    fetch('http://localhost:5000')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        setUsers(data.data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <label>
+        First Name:
+        <input type="text" name="firstName" onChange={handleLastNameChange} />
+      </label>
+      <label>
+        Last Name:
+        <input type="text" name="lastName" onChange={handleFirstNameChange} />
+      </label>
+      <button onClick={set}>Save</button>
+
+      <button onClick={get}>View users</button>
+      <div>
+        {
+          users ?
+            <ul>
+              {users.map((item) => {
+                return <li key={item.userid}>{`${item.fname} ${item.lname}`}</li>;
+              })}
+            </ul> : null
+        }
+      </div>
     </div>
+
+
   );
 }
 
